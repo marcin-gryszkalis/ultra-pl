@@ -1,269 +1,143 @@
 <!DOCTYPE html>
-<!-- modified demo from leaflet-elevation https://raruto.github.io/leaflet-elevation/examples/leaflet-elevation_hoverable-tracks.html -->
 <html>
 
+<script>
+        var tracks = [
+"2021/Race_Around_Poland_new_3600_V2.gpx",
+
+"2020/Baltyk-Sudety_2001km.gpx",
+"2020/BBT2020.gpx",
+"2020/Beskidzki_Zboj.gpx",
+"2020/CarpatiaDivide_2020_final.gpx",
+"2020/Great_Lakes_Gravel.gpx",
+"2020/Malopolska_500.gpx",
+"2020/MP2020_500.gpx",
+"2020/MPP2020.gpx",
+"2020/PGR.gpx",
+"2020/Piekny_Wschod_2020_500.gpx",
+"2020/Piekny_Zachod_501.gpx",
+"2020/Pomorska_500.gpx",
+"2020/PTJ_2020.gpx",
+"2020/VI_KMT_2020_500.gpx",
+"2020/Wisla_1200.gpx",
+
+"2019/MP2019_-_500.gpx",
+"2019/MPP2019.gpx",
+"2019/V_KMT_500.gpx",
+
+];
+</script>
+
 <head>
-	<title>Ultra PL</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-	<style>
-		html,
-		body,
-		#map,
-		#elevation-div {
-			height: 100%;
-			width: 100%;
-			padding: 0px;
-			margin: 0px;
-		}
-	</style>
+    <title>Ultra PL</title>
 
-	<!-- D3.js -->
-	<script src="https://unpkg.com/d3@4.13.0/build/d3.min.js" charset="utf-8"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style>
+        html,
+        body,
+        .leaflet-map {
+            height: 100%;
+            width: 100%;
+            padding: 0px;
+            margin: 0px;
+        }
 
-	<!-- Leaflet (JS/CSS) -->
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-    <script src="https://unpkg.com/leaflet-ui@0.4.6/dist/leaflet-ui.js"></script>
+        .leaflet-map {
+            height: 100%;
+            max-height: 100vh;
+        }
 
-	<!-- leaflet-geometryutil -->
-	<script src="https://unpkg.com/leaflet-geometryutil@0.9.3/src/leaflet.geometryutil.js"></script>
+    </style>
 
-	<!-- leaflet-distance-marker -->
-	<link rel="stylesheet" href="https://unpkg.com/@raruto/leaflet-elevation@1.3.5/libs/leaflet-distance-marker.css" />
-	<script src="https://unpkg.com/@raruto/leaflet-elevation@1.3.5/libs/leaflet-distance-marker.js"></script>
+    <!-- D3.js -->
+    <script src="https://unpkg.com/d3@5.15.0/dist/d3.min.js" charset="utf-8"></script>
 
-	<!-- leaflet-gpx -->
-	<script src="https://unpkg.com/leaflet-gpx@1.5.0/gpx.js"></script>
+    <!-- leaflet-ui -->
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-ui/dist/leaflet-ui.js"></script>
 
-	<!-- leaflet-gpxgroup -->
-	<script src="https://unpkg.com/@raruto/leaflet-elevation@1.3.5/libs/leaflet-gpxgroup.min.js"></script>
+    <!-- leaflet-elevation -->
+    <!--
+    <link rel="stylesheet" href="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.css" />
+    <script src="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.js"></script>
+    -->
+    <link rel="stylesheet" href="https://unpkg.com//@raruto/leaflet-elevation@0.3.4/leaflet-elevation.min.css" />
+    <script src="https://unpkg.com/@raruto/leaflet-elevation@0.3.9/leaflet-elevation.min.js"></script>
 
-	<!-- leaflet-elevation -->
-	<link rel="stylesheet" href="https://unpkg.com//@raruto/leaflet-elevation@1.3.5/dist/leaflet-elevation.css" />
-	<script src="https://unpkg.com/@raruto/leaflet-elevation@1.3.5/dist/leaflet-elevation.js"></script>
+    <!-- leaflet-gpx -->
+    <script src="https://unpkg.com/leaflet-gpx/gpx.js"></script>
 
-	<!-- leaflet-minimap -->
-	<link rel="stylesheet" href="https://unpkg.com/leaflet-minimap@3.6.1/dist/Control.MiniMap.min.css" />
-	<script src="https://unpkg.com/leaflet-minimap@3.6.1/dist/Control.MiniMap.min.js"></script>
-
-	<style>
-		.leaflet-control-layers-list {
-			max-width: 250px;
-			max-height: 25vh;
-			overflow: auto;
-		}
-
-		.leaflet-tooltip {
-			font-weight: 700;
-		}
-
-		#map {
-			height: 90%;
-		}
-/*
-		#elevation-div {
-			height: 10%;
-			font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
-		}
-*/
-/*		.data-summary {
-			font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
-			font-size: 12px;
-			position: absolute;
-			bottom: 0;
-			left: 45px;
-		}
-
-		.data-summary .summaryvalue {
-			font-weight: bold;
-		}
-*/
-		.chart-placeholder {
-			top: 20%;
-			position: absolute;
-			text-align: center;
-			left: 0;
-			right: 0;
-			font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
-			font-style: italic;
-			opacity: 0.5;
-			font-size: 0.9rem;
-		}
-	</style>
+    <!-- leaflet-gpxgroup -->
+    <script src="https://unpkg.com/@raruto/leaflet-elevation/libs/leaflet-gpxgroup.js"></script>
 
 </head>
 
 <body>
 
-	<div id="map"></div>
-<!--
-	<div id="elevation-div" class="leaflet-control elevation"></div>
--->
+    <div id="map" class="leaflet-map"></div>
 
-<!--
-	<div id="data-summary" class="data-summary"><span class="totlen"><span class="summarylabel">Total Length: </span><span class="summaryvalue">0</span></span> &mdash; <span class="maxele"><span class="summarylabel">Max Elevation: </span><span class="summaryvalue">0</span></span>
-		&mdash; <span class="minele"><span class="summarylabel">Min Elevation: </span><span class="summaryvalue">0</span></span></div>
--->
-	<script>
-		var opts = {
-			map: {
-				center: [52.1, 19.30],
-				zoom: 7,
-				zoomControl: false,
-			},
-			zoomControl: {
-				position: 'bottomright',
-			},
-			otmLayer: {
-				url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
-				options: {
-					maxZoom: 17,
-					attribution: 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)',
-				},
-			},
-			osmLayer: {
-				url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-				options: {
-					maxZoom: 19,
-					attribution: 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-				}
-			},
-			satelliteLayer: {
-				url: 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-				options: {
-					maxZoom: 18,
-					attribution: '&copy; <a href="http://www.esri.com/">Esri</a>',
-				},
-			},
-			layersControl: {
-				options: {
-					position: 'topleft',
-					collapsed: true,
-				},
-			},
-			scaleControl: {
-				options: {
-					width: 200,
-					position: 'bottomright',
-					imperial: false,
-				},
-			},
-			miniMapControl: {
-				options: {
-					position: 'bottomleft',
-					toggleDisplay: false,
-					width: 75,
-					height: 75,
-					aimingRectOptions: {
-						color: '#2d2d2d',
-						weight: 0.1,
-					},
-					shadowRectOptions: {
-						color: '#000000',
-						weight: 0.5,
-						opacity: 0,
-						fillOpacity: 0,
-					},
-				},
-			},
-			elevation: {
-				options: {
-					theme: 'lightblue-theme',
-					// width: 500,
-					detachedView: true,
-//					elevationDiv: '#elevation-div',
-                    followPositionMarker: true,
-                    summary: 'line',
-                    legend: true,
-                    zFollow: false,
-				},
-			},
-            marker: {
+    <script>
+        var opts = {
+            map: {
+                center: [52.1, 19.30],
+                zoom: 7,
+                fullscreenControl: false,
+                resizerControl: false,
+                mapTypeId: 'streets',
+                mapTypeIds: ['streets', 'satellite', 'topo'],
+                gestureHandling: false,
+                zoomControl: true,
+                pegmanControl: false,
+                locateControl: false,
+                layersControl: true,
+                minimapControl: false,
+                editInOSMControl: false,
+                loadingControl: true,
+                searchControl: false,
+                disableDefaultUI: false,
+            },
+            elevationControl: {
                 options: {
-                    startIconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.5.0/pin-icon-start.png',
-                    endIconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.5.0/pin-icon-end.png',
-                    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.5.0/pin-shadow.png'
+                    theme: "lightblue-theme",
+                    collapsed: false,
+                    detached: false,
+                    summary: "line",
+                    position: "bottomleft",
+                    followMarker: false,
                 },
             },
-		};
+            layersControl: {
+                options: {
+                    collapsed: true, 
+                },
+            },
+        };
 
-		var tracks = [
-"2021/Race_Around_Poland_new_3600_V2.gpx",
+        var map = L.map('map', opts.map);
 
-"2020/Baltyk-Sudety_2001km.gpx",
-"2020/BBT2020.gpx",
-//"2020/Beskidzki_Zboj.gpx",
-//"2020/CarpatiaDivide_2020_final.gpx",
-//"2020/Great_Lakes_Gravel.gpx",
-//"2020/Malopolska_500.gpx",
-"2020/MP2020_500.gpx",
-//"2020/MPP2020.gpx",
-//"2020/PGR.gpx",
-//"2020/Piekny_Wschod_2020_500.gpx",
-//"2020/Piekny_Zachod_501.gpx",
-//"2020/Pomorska_500.gpx",
-//"2020/PTJ_2020.gpx",
-//"2020/VI_KMT_2020_500.gpx",
-//"2020/Wisla_1200.gpx",
-];
+        var controlElevation = L.control.elevation(opts.elevationControl.options);
 
+//        controlElevation.addTo(map);
 
+//        controlElevation.on('eledata_loaded', function(e) {
+//            controlLayer.addOverlay(e.layer, e.name);
+//        });
 
-		var map = L.map('map', opts.map);
+//        controlElevation.load(opts.elevationControl.url);
+//        controlElevation.load(opts.elevationControl.url2);
 
-		var baseLayers = {};
+        var routes = L.gpxGroup(tracks, {
+//            marker_options: opts.marker.options,
+            elevation: true,
+            elevation_options: opts.elevationControl.options,
+            legend: true,
+            distanceMarkers: true,
+        });
 
-		baseLayers["ESRI World Imagery"] = L.tileLayer(opts.satelliteLayer.url, opts.satelliteLayer.options);
-		baseLayers["OpenTopoMap"] = new L.TileLayer(opts.otmLayer.url, opts.otmLayer.options);
-		baseLayers["OpenStreetMap"] = new L.TileLayer(opts.osmLayer.url, opts.osmLayer.options);
+    routes.addTo(map);
+    </script>
 
-		var controlZoom = new L.Control.Zoom(opts.zoomControl);
-		var controlLayer = L.control.layers(baseLayers, null, opts.layersControl.options);
-		var controlScale = L.control.scale(opts.scaleControl.options);
-		var controlMiniMap = new L.Control.MiniMap(new L.TileLayer(opts.osmLayer.url, opts.osmLayer.options), opts.miniMapControl.options);
-
-		var routes = L.gpxGroup(tracks, {
-            marker_options: opts.marker.options,
-			elevation: true,
-			elevation_options: opts.elevation.options,
-			legend: true,
-			distanceMarkers: false,
-		});
-
-		map.on('eledata_added eledata_clear', function(e) {
-			var p = document.querySelector(".chart-placeholder");
-			if(p) {
-				p.style.display = e.type=='eledata_added' ? 'none' : '';
-			}
-		});
-
-		map.on('eledata_added', function(e) {
-			var q = document.querySelector.bind(document);
-			var track = e.track_info;
-
-			//controlLayer.addOverlay(e.layer, e.name);
-//			q('.totlen .summaryvalue').innerHTML = track.distance.toFixed(2) + " km";
-//			q('.maxele .summaryvalue').innerHTML = track.elevation_max.toFixed(2) + " m";
-//			q('.minele .summaryvalue').innerHTML = track.elevation_min.toFixed(2) + " m";
-		});
-
-		controlLayer.addTo(map);
-		controlScale.addTo(map);
-		controlZoom.addTo(map);
-		controlLocate.addTo(map);
-		controlMiniMap.addTo(map);
-
-		routes.addTo(map);
-
-		map.addLayer(baseLayers["OpenStreetMap"]);
-
-		// map.attributionControl.addAttribution('Map Data: &copy; <a href="https://github.com/adoroszlai">Attila Doroszlai</a> (<a href="https://github.com/adoroszlai/joebed/blob/gh-pages/LICENSE.md">MIT License</a>)'); 
-	</script>
-<!--
-	<a href="https://github.com/Raruto/leaflet-elevation" class="view-on-github" style="position: fixed;bottom: 10px;left: calc(50% - 60px);z-index: 9999;"> <img alt="View on Github" src="https://raruto.github.io/img/view-on-github.png" title="View on Github"
-		  width="163"> </a>
--->
 </body>
 
 </html>
