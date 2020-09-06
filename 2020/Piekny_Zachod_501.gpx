@@ -1,41 +1,13 @@
 <?xml version="1.0"?>
 <gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" creator="AllTrails.com" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
   <metadata>
-    <name><![CDATA[Trasa Piękny Zachód 501 km 2020(28.08.2020)]]></name>
+    <name><![CDATA[2020 / Piękny Zachód 501]]></name>
     <desc><![CDATA[]]></desc>
     <link href="http://www.alltrails.com">
       <text>AllTrails, LLC</text>
     </link>
     <bounds minlat="50.69694" minlon="14.97235" maxlat="52.24767" maxlon="16.04569"/>
   </metadata>
-  <wpt lat="51.74948" lon="15.59399">
-    <name><![CDATA[1 PK 102 KM KOŻUCHÓW (STADION MIEJSKI RESTAURACJA HELENA)]]></name>
-    <desc><![CDATA[]]></desc>
-  </wpt>
-  <wpt lat="51.33108" lon="15.57878">
-    <name><![CDATA[2 PK 155 KM DĄBROWA BOLESŁAWIECKA ( ZAJAZD LEŚNY )]]></name>
-    <desc><![CDATA[]]></desc>
-  </wpt>
-  <wpt lat="50.90766" lon="15.96042">
-    <name><![CDATA[3 PK 246 KM KACZORÓW (KARCZMA PODGÓRZANKA)]]></name>
-    <desc><![CDATA[]]></desc>
-  </wpt>
-  <wpt lat="50.73174" lon="15.88021">
-    <name><![CDATA[4 PK 286 KM JARKOWICE (Agroturystyka " Szczęśliwa Siódemka ")]]></name>
-    <desc><![CDATA[]]></desc>
-  </wpt>
-  <wpt lat="51.02285" lon="15.26339">
-    <name><![CDATA[5 PK 373 KM LEŚNA Toscana Bar Pizzeria]]></name>
-    <desc><![CDATA[]]></desc>
-  </wpt>
-  <wpt lat="51.78529" lon="14.97668">
-    <name><![CDATA[6 PK 472 KM LUBSKO (OSiR BAR SAJGONKA) ]]></name>
-    <desc><![CDATA[]]></desc>
-  </wpt>
-  <wpt lat="51.50126" lon="15.20456">
-    <name><![CDATA[7 PK 433 KM IŁOWA Hala Sportowa Szkoła Podstawowa ]]></name>
-    <desc><![CDATA[]]></desc>
-  </wpt>
   <trk>
     <name><![CDATA[Trasa Piękny Zachód 501 km 2020(28.08.2020)]]></name>
     <desc><![CDATA[]]></desc>
